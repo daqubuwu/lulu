@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+<div class="container">
+  <aside class="sidebar">
+    <div class="playlists">
+      <h3>Плейлисты</h3>
+      <ul>
+        {% for playlist in playlists %}
+          <li>{{ playlist.title }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="user-info">
+      <h3>Информация о пользователе</h3>
+      <p>Имя пользователя</p>
+      <p>Любимых треков: {{ tracks|length }}</p>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="track-row">
+      {% for track in tracks %}
+        <div class="track-item">
+          <a href="{% url 'artist_detail' track.artist.id %}">
+            {% if track.album.cover %}
+              <img src="{{ track.album.cover.url }}" alt="{{ track.title }} img" />
+            {% else %}
+              <p>Обложка отсутствует</p>
+            {% endif %}
+            <p>{{ track.title }}</p>
+            <p>{{ track.artist.name }}</p>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+</div>
+{% endblock %}

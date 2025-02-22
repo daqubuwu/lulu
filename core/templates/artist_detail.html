@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ artist.name }}{% endblock %}
+{% block content %}
+<h1>{{ artist.name }}</h1>
+<p>О исполнителе: {{ artist.bio }}</p>
+
+{% if artist.photo %}
+  <img src="{{ artist.photo.url }}" alt="{{ artist.name }}" />
+{% else %}
+  <p>Изображение отсутствует</p>
+{% endif %}
+
+
+<h2>Дискография</h2>
+<ul>
+  {% for album in albums %}
+  <li>
+    {% if album.cover %}
+  <img src="{{ album.cover.url }}" alt="{{ album.title }} img" />
+{% else %}
+  <p>Обложка отсутствует</p>
+{% endif %}
+    <p>Альбом: {{ album.title }}</p>
+    <p>Дата выпуска: {{ album.release_date }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
