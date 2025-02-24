@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 
 def home(request):
@@ -9,7 +10,7 @@ def home(request):
     if query:
         tracks = Track.objects.filter(Q(title__icontains=query) | Q(artist__name__icontains=query))[:9]
     else:
-        tracks = Track.objects.select_related('artist').all()[:9]
+        tracks = Track.objects.select_related('artist').all()
 
     artists = Artist.objects.all()
     playlists = Playlist.objects.all()
@@ -19,7 +20,8 @@ def home(request):
 def artist_detail(request, artist_id):
     artist = Artist.objects.get(id=artist_id)
     albums = Album.objects.filter(artist=artist)
-    return render(request, 'artist_detail.html', {'artist': artist, 'albums': albums})
+    tracks = Track.objects.filter(artist=artist)
+    return render(request, 'artist_detail.html', {'artist': artist, 'albums': albums, 'tracks': tracks})
 
 def tracks(request):
     tracks = Track.objects.select_related('artist').all()
@@ -44,3 +46,14 @@ def register(request):
 
 def login(request):
     return render(request, 'core_auth/login.html')
+
+
+
+def track_detail(request, track_id):
+    track = get_object_or_404(Track, id=track_id)
+    genres = track.trackgenre_set.all()  # Получаем жанры трека
+    context = {
+        'track': track,
+        'genres': genres,
+    }
+    return render(request, 'track_detail.html', context)

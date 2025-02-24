@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}{{ track.title }} - {{ track.artist.name }}{% endblock %}
+{% block content %}
+<div class="track-detail-container">
+  <div class="track-header">
+    <div class="track-cover">
+      {% if track.album.cover %}
+        <img src="{{ track.album.cover.url }}" alt="{{ track.title }}" />
+      {% else %}
+        <div class="no-cover">No Cover</div>
+      {% endif %}
+    </div>
+    <div class="track-info">
+      <h1>{{ track.title }}</h1>
+      <p class="track-artist">{{ track.artist.name }}</p>
+      <p class="track-album">Альбом: {{ track.album.title }}</p>
+      <p class="track-duration">Длительность: {{ track.duration|duration_format }}</p>
+      <p class="track-genres">Жанры: 
+        {% for genre in genres %}
+          {{ genre.genre.name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </p>
+      <button id="add-to-playlist">Добавить в плейлист</button>
+    </div>
+  </div>
+
+  <div class="track-lyrics">
+    <h2>Текст трека</h2>
+    {% if track.lyrics %}
+      <pre>{{ track.lyrics }}</pre>
+    {% else %}
+      <p>Текст трека отсутствует.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

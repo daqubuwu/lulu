@@ -13,11 +13,16 @@
     </div>
     <div class="user-info">
       <h3>Информация о пользователе</h3>
-      <p>Имя пользователя</p>
+      {% if user.is_authenticated %}
+        <p>Имя пользователя: {{ user.username }}</p>
+      {% else %}
+        <p>Пользователь не авторизован</p>
+      {% endif %}
       <p>Любимых треков: {{ tracks|length }}</p>
     </div>
   </aside>
   <main class="main-content">
+    <h2>Новинки</h2>
     <div class="track-row">
       {% for track in tracks %}
         <div class="track-item">
@@ -34,5 +39,18 @@
       {% endfor %}
     </div>
   </main>
+  <aside class="track-sidebar">
+    <div class="track-info">
+      <h3>Текущий трек</h3>
+      <div class="track-cover">
+        <img id="track-cover" src="" alt="Обложка трека" />
+      </div>
+      <p id="track-title">Название трека</p>
+      <p id="track-artist">Исполнитель</p>
+      <p id="track-album">Альбом</p>
+      <p id="track-genres">Жанры: <span></span></p>
+      <button id="add-to-playlist">Добавить в плейлист</button>
+    </div>
+  </aside>
 </div>
 {% endblock %}

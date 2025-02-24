@@ -17,11 +17,18 @@
 
         {% if request.path != '/core_auth/login/' %}
           <div class="search-container">
-            <form method="get" action="{% url 'home' %}">
-              <input type="text" name="q" placeholder="Поиск..." class="search-input" />
-              <button type="submit">Найти</button>
-            </form>
-          </div>
+  <form method="get" action="{% url 'home' %}" id="search-form" class="search-form">
+    <input
+      type="text"
+      name="q"
+      placeholder="Поиск..."
+      class="search-input"
+      id="search-input"
+      autocomplete="off"
+    />
+    <button type="submit" class="search-button">Найти</button>
+  </form>
+</div>
 
           <div class="header-actions">
             <a href="{% url 'favorites' %}" class="icon-link">

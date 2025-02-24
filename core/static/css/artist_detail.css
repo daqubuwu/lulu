@@ -1,10 +1,220 @@
-.artist-photo {
-  max-width: 300px;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 20px;
+/* Основные стили для страницы */
+.artist-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+/* Заголовки */
+h1, h2 {
+    color: #1db954; /* Зеленый цвет для заголовков */
+}
+
+/* Первый блок: аватар и информация */
+.artist-header {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 40px;
 }
 
 .artist-photo-container {
-  text-align: center;
+    flex: 1;
+    max-width: 50%;
+}
+
+.artist-photo {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-photo {
+    font-size: 1rem;
+    color: #999;
+    text-align: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    border-radius: 8px;
+}
+
+.artist-info {
+    flex: 1;
+    max-width: 50%;
+}
+
+.artist-info h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.artist-bio {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Дискография */
+.discography {
+    margin-top: 40px;
+}
+
+.discography h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.album-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.album-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.album-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.album-cover {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.no-cover {
+    text-align: center;
+    padding: 20px;
+    font-size: 1rem;
+    color: #999;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+}
+
+.album-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.album-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.album-release-date {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.tracks {
+  margin-top: 40px;
+}
+
+.tracks h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #1db954;
+}
+
+.track-list {
+  list-style: none;
+  padding: 0;
+}
+
+.track-item {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #1f1f1f;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.track-item:hover {
+  background-color: #333;
+}
+
+.track-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.track-cover img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.no-cover {
+  width: 50px;
+  height: 50px;
+  background-color: #333;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.track-details {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.track-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  margin: 0;
+}
+
+.track-artist {
+  font-size: 0.9rem;
+  color: #bbb;
+  margin: 0;
+}
+
+.track-duration {
+  font-size: 0.9rem;
+  color: #bbb;
+  margin-left: auto;
+  padding-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .artist-header {
+        flex-direction: column;
+    }
+    .artist-photo-container, .artist-info {
+        max-width: 100%;
+    }
+    .artist-photo {
+        height: 300px;
+    }
+    .no-photo {
+        height: 300px;
+    }
 }
