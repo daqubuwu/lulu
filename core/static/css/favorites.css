@@ -1,14 +1,18 @@
-.container {
+.favorites-container {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #fff;
 }
 
-h1 {
+.favorites-container h1 {
+  font-size: 2.5rem;
   color: #1db954;
-  text-align: center;
   margin-bottom: 20px;
 }
 
-.favorites-list {
+.track-row {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -16,64 +20,87 @@ h1 {
 }
 
 .track-item {
-  display: flex;
-  align-items: center;
   background-color: #1f1f1f;
   padding: 15px;
   border-radius: 8px;
-  width: 300px;
+  width: calc(25% - 15px); /* 4 трека в строке */
+  text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .track-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.track-thumbnail {
-  width: 80px;
-  height: 80px;
-  margin-right: 15px;
-  flex-shrink: 0;
-}
-
-.track-thumbnail img {
+.track-cover img {
   width: 100%;
-  height: 100%;
+  height: 150px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
-.track-thumbnail .no-cover {
+.no-cover {
   width: 100%;
-  height: 100%;
+  height: 150px;
+  background-color: #333;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #333;
-  color: #bbb;
-  border-radius: 4px;
-  font-size: 12px;
+  color: #666;
+  font-size: 0.9rem;
 }
 
-.track-info {
-  flex-grow: 1;
+.track-details {
+  margin-top: 10px;
 }
 
 .track-title {
-  margin: 0;
-  font-size: 16px;
+  font-size: 1.2rem;
+  font-weight: bold;
   color: #fff;
+  margin: 0;
 }
 
 .track-artist {
-  margin: 4px 0;
-  font-size: 14px;
+  font-size: 1rem;
   color: #bbb;
+  margin: 5px 0;
 }
 
-.track-duration {
-  margin: 0;
-  font-size: 14px;
-  color: #888;
+.track-album, .track-duration {
+  font-size: 0.9rem;
+  color: #bbb;
+  margin: 5px 0;
+}
+
+.track-actions {
+  margin-top: 10px;
+}
+
+.like-button {
+  padding: 8px 16px;
+  background-color: #1db954;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.like-button:hover {
+  background-color: #19a84c;
+}
+
+@media (max-width: 768px) {
+  .track-item {
+    width: calc(50% - 10px);
+  }
+}
+@media (max-width: 480px) {
+  .track-item {
+    width: 100%;
+  }
 }

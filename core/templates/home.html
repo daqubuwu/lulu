@@ -28,7 +28,7 @@
         <div class="track-item">
           <a href="{% url 'artist_detail' track.artist.id %}">
             {% if track.album.cover %}
-              <img src="{{ track.album.cover.url }}" alt="{{ track.title }} img" />
+              <img src="{{ track.album.cover }}" alt="{{ track.title }} img" />
             {% else %}
               <p>Обложка отсутствует</p>
             {% endif %}

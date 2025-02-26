@@ -1,7 +1,7 @@
 body {
   background-color: #121212;
   color: #ffffff;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -181,6 +181,8 @@ header {
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .track-item:hover {
@@ -189,7 +191,7 @@ header {
 }
 
 .track-item img {
-  width: 100%;
+  width: 150px;
   height: 150px;
   object-fit: cover;
   border-radius: 8px;
@@ -365,3 +367,19 @@ header {
   }
 }
 
+
+.like-button {
+  padding: 10px 20px;
+  background-color: #1db954;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.like-button:hover {
+  background-color: #19a84c;
+}

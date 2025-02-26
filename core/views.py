@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib.auth import get_user_model
 
+
+User = get_user_model()
 
 def home(request):
     query = request.GET.get('q')
@@ -27,16 +30,26 @@ def tracks(request):
     tracks = Track.objects.select_related('artist').all()
     return render(request, 'main/tracks.html', {'tracks': tracks})
 
+def track_detail(request, track_id):
+    track = Track.objects.get(id=track_id)
+    genres = track.trackgenre_set.all()
+    context = {
+        'track': track,
+        'genres': genres,
+    }
+    return render(request, 'track_detail.html', context)
+
+
+
 
 @login_required
 def favorites(request):
-    username = ""
-    try:
-        user = User.objects.get(username=username)
-        favorites = Track.objects.filter(like__user=user)
-        return render(request, 'favorites.html', {'favorites': favorites})
-    except User.DoesNotExist:
-        return render(request, 'favorites.html', {'error': 'Пользователь не найден'})
+    liked_tracks = Like.objects.filter(user=request.user).select_related('track')
+    tracks = [like.track for like in liked_tracks]
+    context = {
+        'tracks': tracks,
+    }
+    return render(request, 'favorites.html', context)
 
 def history(request):
     return render(request, 'history.html')
@@ -48,12 +61,26 @@ def login(request):
     return render(request, 'core_auth/login.html')
 
 
-
 def track_detail(request, track_id):
     track = get_object_or_404(Track, id=track_id)
-    genres = track.trackgenre_set.all()  # Получаем жанры трека
+    genres = track.trackgenre_set.all()
+    liked_tracks = []
+    if request.user.is_authenticated:
+        # user = User.objects.get(user=request.user)
+        print("ksjdbfjkehjdfhgjdhfjk",request.user)
+        liked_tracks = Like.objects.filter(user=request.user).values_list('track_id', flat=True)
     context = {
         'track': track,
         'genres': genres,
+        'liked_tracks': liked_tracks,
     }
     return render(request, 'track_detail.html', context)
+
+@login_required
+def like_track(request, track_id):
+    track = get_object_or_404(Track, id=track_id)
+    user = User.objects.get(username=request.user.username)
+    like, created = Like.objects.get_or_create(user=user, track=track)
+    if not created:
+        like.delete()
+    return redirect('track_detail', track_id=track_id)

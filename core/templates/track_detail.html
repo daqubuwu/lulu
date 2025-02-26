@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/track_detail.css' %}" />
+{% endblock %}
 {% block title %}{{ track.title }} - {{ track.artist.name }}{% endblock %}
 {% block content %}
 <div class="track-detail-container">
   <div class="track-header">
     <div class="track-cover">
       {% if track.album.cover %}
-        <img src="{{ track.album.cover.url }}" alt="{{ track.title }}" />
+        <img src="{{ track.album.cover }}" alt="{{ track.title }}" />
       {% else %}
         <div class="no-cover">No Cover</div>
       {% endif %}
@@ -14,13 +18,24 @@
       <h1>{{ track.title }}</h1>
       <p class="track-artist">{{ track.artist.name }}</p>
       <p class="track-album">Альбом: {{ track.album.title }}</p>
-      <p class="track-duration">Длительность: {{ track.duration|duration_format }}</p>
-      <p class="track-genres">Жанры: 
+      <p class="track-duration">Длительность: {{ track.duration }} сек.</p>
+      <p class="track-genres">Жанры:
         {% for genre in genres %}
           {{ genre.genre.name }}{% if not forloop.last %}, {% endif %}
         {% endfor %}
       </p>
-      <button id="add-to-playlist">Добавить в плейлист</button>
+      {% if user.is_authenticated %}
+        <form action="{% url 'like_track' track.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="like-button">
+            {% if track.id in liked_tracks %}
+              ❤️ Убрать из избранного
+            {% else %}
+              🤍 Добавить в избранное
+            {% endif %}
+          </button>
+        </form>
+      {% endif %}
     </div>
   </div>
 
@@ -32,5 +47,12 @@
       <p>Текст трека отсутствует.</p>
     {% endif %}
   </div>
+</div>
+
+<div class="audio-player">
+  <audio controls>
+    <source src="{{ track.file_url }}" type="audio/mpeg">
+    Ваш браузер не поддерживает аудиоэлемент.
+  </audio>
 </div>
 {% endblock %}

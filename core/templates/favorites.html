@@ -3,30 +3,40 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/favorites.css' %}" />
 {% endblock %}
-
-{% block title %}Избранное{% endblock %}
-
+{% block title %}Избранные треки{% endblock %}
 {% block content %}
-<div class="container">
+<div class="favorites-container">
   <h1>Избранные треки</h1>
-  <div class="favorites-list">
-    {% for track in favorites %}
-      <div class="track-item">
-        <div class="track-thumbnail">
-          {% if track.album.cover %}
-            <img src="{{ track.album.cover.url }}" alt="{{ track.title }}" />
-          {% else %}
-            <div class="no-cover">Нет обложки</div>
-          {% endif %}
+  {% if tracks %}
+    <div class="track-row">
+      {% for track in tracks %}
+        <div class="track-item">
+          <div class="track-cover">
+            {% if track.album.cover %}
+              <img src="{{ track.album.cover.url }}" alt="{{ track.title }}" />
+            {% else %}
+              <div class="no-cover">No Cover</div>
+            {% endif %}
+          </div>
+          <div class="track-details">
+            <p class="track-title">{{ track.title }}</p>
+            <p class="track-artist">{{ track.artist.name }}</p>
+            <p class="track-album">Альбом: {{ track.album.title }}</p>
+            <p class="track-duration">Длительность: {{ track.duration    }}</p>
+          </div>
+          <div class="track-actions">
+            <form action="{% url 'like_track' track.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="like-button">
+                ❤️ Убрать из избранного
+              </button>
+            </form>
+          </div>
         </div>
-
-        <div class="track-info">
-          <p class="track-title">{{ track.title }}</p>
-          <p class="track-artist">{{ track.artist.name }}</p>
-          <p class="track-duration">{{ track.duration|time:"i:s" }}</p>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>У вас пока нет избранных треков.</p>
+  {% endif %}
 </div>
 {% endblock %}

@@ -7,11 +7,10 @@
 {% block title %}{{ artist.name }}{% endblock %}
 {% block content %}
 <div class="artist-container">
-    <!-- Первый блок: аватар и информация -->
     <div class="artist-header">
         <div class="artist-photo-container">
             {% if artist.photo %}
-                <img src="{{ artist.photo.url }}" alt="{{ artist.name }}" class="artist-photo" />
+                <img src="{{ artist.photo }}" alt="{{ artist.name }}" class="artist-photo" />
             {% else %}
                 <p class="no-photo">Изображение отсутствует</p>
             {% endif %}
@@ -22,14 +21,13 @@
         </div>
     </div>
 
-    <!-- Дискография -->
     <div class="discography">
         <h2>Дискография</h2>
         <ul class="album-list">
             {% for album in albums %}
             <li class="album-item">
                 {% if album.cover %}
-                    <img src="{{ album.cover.url }}" alt="{{ album.title }}" class="album-cover" />
+                    <img src="{{ album.cover }}" alt="{{ album.title }}" />
                 {% else %}
                     <p class="no-cover">Обложка отсутствует</p>
                 {% endif %}
@@ -42,31 +40,32 @@
         </ul>
     </div>
 
-    <!-- Треки исполнителя -->
     <div class="tracks">
-  <h2>Треки</h2>
-  <ul class="track-list">
-    {% for track in tracks %}
-    <li class="track-item">
-      <div class="track-content">
-        <div class="track-cover">
-          {% if track.album.cover %}
-            <img src="{{ track.album.cover.url }}" alt="{{ track.title }}" />
-          {% else %}
-            <div class="no-cover">No Cover</div>
-          {% endif %}
-        </div>
-        <div class="track-details">
-          <p class="track-title">{{ track.title }}</p>
-          <p class="track-artist">{{ track.artist.name }}</p>
-        </div>
-        <div class="track-duration">
-          {{ track.duration }}
-        </div>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+        <h2>Треки</h2>
+        <ul class="track-list">
+            {% for track in tracks %}
+                <li class="track-item">
+                    <a href="{% url 'track_detail' track.id %}">
+                        <div class="track-content">
+                            <div class="track-cover">
+                                {% if track.album.cover %}
+                                    <img src="{{ track.album.cover }}" alt="{{ track.title }}" />
+                                {% else %}
+                                    <div class="no-cover">No Cover</div>
+                                {% endif %}
+                            </div>
+                            <div class="track-details">
+                                <p class="track-title">{{ track.title }}</p>
+                                <p class="track-artist">{{ track.artist.name }}</p>
+                            </div>
+                            <div class="track-duration">
+                                {{ track.duration }} сек.
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endblock %}
