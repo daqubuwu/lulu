@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/playlist_detail.css' %}" />
+{% endblock %}
 {% block title %}{{ playlist.title }}{% endblock %}
 {% block content %}
 <div class="playlist-detail-container">

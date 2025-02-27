@@ -23,7 +23,7 @@
   background-color: #1f1f1f;
   padding: 15px;
   border-radius: 8px;
-  width: calc(25% - 15px); /* 4 трека в строке */
+  width: calc(25% - 15px);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

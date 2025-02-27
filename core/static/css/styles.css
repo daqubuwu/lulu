@@ -4,10 +4,8 @@ body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
 }
 
-/* Стили для хедера */
 header {
   background-color: #1f1f1f;
   padding: 10px 20px;
@@ -117,7 +115,6 @@ header {
   background-color: #19a84c;
 }
 
-/* Остальные стили */
 .container {
   display: flex;
   padding: 20px;
@@ -167,6 +164,7 @@ header {
   flex-grow: 1;
 }
 
+
 .section {
   margin-bottom: 40px;
 }
@@ -176,13 +174,46 @@ header {
   margin-bottom: 20px;
 }
 
-.slider, .track-row, .playlist-row {
+.section-header {
   display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  scroll-behavior: smooth;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
+
+.scroll-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.scroll-arrow {
+  background-color: #1db954;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.scroll-arrow:hover {
+  background-color: rgba(29, 185, 84, 0.8);
+}
+
+
+.tracks-container, .playlists-container, .slider, .track-row, .playlist-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+
 
 .track-item, .playlist-item {
   background-color: #1f1f1f;
@@ -221,32 +252,12 @@ header {
   color: #1db954;
 }
 
-/* Стили для плейлистов (выделение) */
 .playlist-item {
-  background-color: #2a2a2a;  /* Более светлый фон */
-  padding: 20px;  /* Увеличил отступы */
-  width: 220px;  /* Увеличил ширину */
+  background-color: #2a2a2a;
+  padding: 20px;
+  width: 220px;
 }
 
 .playlist-item img {
-  height: 180px;  /* Увеличил высоту обложки */
-}
-
-/* Стили для скролла */
-.slider::-webkit-scrollbar, .track-row::-webkit-scrollbar, .playlist-row::-webkit-scrollbar {
-  height: 8px;
-}
-
-.slider::-webkit-scrollbar-track, .track-row::-webkit-scrollbar-track, .playlist-row::-webkit-scrollbar-track {
-  background: #1f1f1f;
-  border-radius: 4px;
-}
-
-.slider::-webkit-scrollbar-thumb, .track-row::-webkit-scrollbar-thumb, .playlist-row::-webkit-scrollbar-thumb {
-  background: #1db954;
-  border-radius: 4px;
-}
-
-.slider::-webkit-scrollbar-thumb:hover, .track-row::-webkit-scrollbar-thumb:hover, .playlist-row::-webkit-scrollbar-thumb:hover {
-  background: #19a84c;
+  height: 180px;
 }

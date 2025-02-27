@@ -2,27 +2,48 @@
 {% block title %}Главная страница{% endblock %}
 {% block content %}
 <div class="container">
-  <!-- Левый сайдбар с плейлистами -->
   <aside class="sidebar">
-    <div class="playlists">
-      <h3>Плейлисты</h3>
-      <ul>
-        {% for playlist in playlists %}
-          <li>
-            <a href="{% url 'playlist_detail' playlist.id %}">{{ playlist.title }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+    <div class="sidebar">
+
+        <a href="{% url 'favorites' %}" class="sidebar-item">
+            <i class="fas fa-heart"></i>
+            <span>Избранные</span>
+        </a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="sidebar-item logout-btn">
+                <i class="auth fa-sign-out-alt"></i>
+                <span>Выйти</span>
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="sidebar-item login-btn">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Вход</span>
+            </a>
+            <a href="{% url 'register' %}" class="sidebar-item register-btn">
+                <i class="fas fa-user-plus"></i>
+                <span>Регистрация</span>
+            </a>
+        {% endif %}
     </div>
   </aside>
 
-  <!-- Основной контент -->
+
   <main class="main-content">
-    <!-- Слайдер "Новинки" -->
     <section class="section">
-      <h2>Новинки</h2>
-      <div class="slider">
-        {% for track in new_tracks %}
+      <div class="section-header">
+        <h2>Новинки</h2>
+        <div class="scroll-controls">
+          <button class="scroll-arrow left-arrow" onclick="scrollTracks('new-tracks-container', -1)">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="scroll-arrow right-arrow" onclick="scrollTracks('new-tracks-container', 1)">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="tracks-container" id="new-tracks-container">
+        {% for track in new_tracks|slice:":5" %}
           <div class="track-item">
             <a href="{% url 'track_detail' track.id %}">
               {% if track.album.cover %}
@@ -40,11 +61,20 @@
       </div>
     </section>
 
-    <!-- Блок "Вам может понравиться" -->
     <section class="section">
-      <h2>Вам может понравиться</h2>
-      <div class="track-row">
-        {% for track in recommended_tracks %}
+      <div class="section-header">
+        <h2>Вам может понравиться</h2>
+        <div class="scroll-controls">
+          <button class="scroll-arrow left-arrow" onclick="scrollTracks('new-tracks-container', -1)">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="scroll-arrow right-arrow" onclick="scrollTracks('new-tracks-container', 1)">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="tracks-container" id="recommended-tracks-container">
+        {% for track in recommended_tracks|slice:":4" %}
           <div class="track-item">
             <a href="{% url 'track_detail' track.id %}">
               {% if track.album.cover %}
@@ -62,11 +92,20 @@
       </div>
     </section>
 
-    <!-- Плейлист "Необычное для вас" -->
     <section class="section">
-      <h2>Необычное для вас</h2>
-      <div class="playlist-row">
-        {% for playlist in unusual_playlists %}
+      <div class="section-header">
+        <h2>Необычное для вас</h2>
+        <div class="scroll-controls">
+          <button class="scroll-arrow left-arrow" onclick="scrollTracks('new-tracks-container', -1)">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="scroll-arrow right-arrow" onclick="scrollTracks('new-tracks-container', 1)">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="playlists-container" id="unusual-playlists-container">
+        {% for playlist in unusual_playlists|slice:":4" %}
           <div class="playlist-item">
             <a href="{% url 'playlist_detail' playlist.id %}">
               {% if playlist.tracks.first.album.cover %}
@@ -81,11 +120,20 @@
       </div>
     </section>
 
-    <!-- Блок с остальными плейлистами -->
     <section class="section">
-      <h2>Все плейлисты</h2>
-      <div class="playlist-row">
-        {% for playlist in all_playlists %}
+      <div class="section-header">
+        <h2>Все плейлисты</h2>
+        <div class="scroll-controls">
+              <button class="scroll-arrow left-arrow" onclick="scrollTracks('new-tracks-container', -1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="scroll-arrow right-arrow" onclick="scrollTracks('new-tracks-container', 1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+        </div>
+      </div>
+      <div class="playlists-container" id="all-playlists-container">
+        {% for playlist in all_playlists|slice:":4" %}
           <div class="playlist-item">
             <a href="{% url 'playlist_detail' playlist.id %}">
               {% if playlist.tracks.first.album.cover %}
@@ -101,38 +149,36 @@
     </section>
   </main>
 </div>
-
-<!-- Скрипт для слайдеров -->
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const sliders = document.querySelectorAll('.slider');
-    sliders.forEach(slider => {
-      let isDown = false;
-      let startX;
-      let scrollLeft;
+// Функция для прокрутки треков
+function scrollTracks(containerId, direction) {
+  const container = document.getElementById(containerId);
+  const trackItems = container.querySelectorAll('.track-item');
+  const trackWidth = trackItems[0].offsetWidth + 20; // Ширина трека + отступ
+  const scrollAmount = trackWidth * direction;
 
-      slider.addEventListener('mousedown', (e) => {
-        isDown = true;
-        startX = e.pageX - slider.offsetLeft;
-        scrollLeft = slider.scrollLeft;
-      });
-
-      slider.addEventListener('mouseleave', () => {
-        isDown = false;
-      });
-
-      slider.addEventListener('mouseup', () => {
-        isDown = false;
-      });
-
-      slider.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - slider.offsetLeft;
-        const walk = (x - startX) * 2; // Скорость прокрутки
-        slider.scrollLeft = scrollLeft - walk;
-      });
-    });
+  // Прокручиваем контейнер
+  container.scrollBy({
+    left: scrollAmount,
+    behavior: 'smooth'
   });
+
+  // Добавляем новый трек и удаляем крайний
+  if (direction === 1) {
+    const firstTrack = trackItems[0];
+    const newTrack = document.createElement('div');
+    newTrack.classList.add('track-item');
+    newTrack.innerHTML = firstTrack.innerHTML; // Копируем содержимое
+    container.appendChild(newTrack); // Добавляем новый трек в конец
+    firstTrack.remove(); // Удаляем первый трек
+  } else if (direction === -1) {
+    const lastTrack = trackItems[trackItems.length - 1];
+    const newTrack = document.createElement('div');
+    newTrack.classList.add('track-item');
+    newTrack.innerHTML = lastTrack.innerHTML; // Копируем содержимое
+    container.insertBefore(newTrack, trackItems[0]); // Добавляем новый трек в начало
+    lastTrack.remove(); // Удаляем последний трек
+  }
+}
 </script>
 {% endblock %}

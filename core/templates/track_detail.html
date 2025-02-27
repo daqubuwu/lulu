@@ -3,56 +3,57 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/track_detail.css' %}" />
 {% endblock %}
-{% block title %}{{ track.title }} - {{ track.artist.name }}{% endblock %}
 {% block content %}
 <div class="track-detail-container">
-  <div class="track-header">
-    <div class="track-cover">
-      {% if track.album.cover %}
-        <img src="{{ track.album.cover }}" alt="{{ track.title }}" />
-      {% else %}
-        <div class="no-cover">No Cover</div>
-      {% endif %}
-    </div>
-    <div class="track-info">
-      <h1>{{ track.title }}</h1>
-      <p class="track-artist">{{ track.artist.name }}</p>
-      <p class="track-album">Альбом: {{ track.album.title }}</p>
-      <p class="track-duration">Длительность: {{ track.duration }} сек.</p>
-      <p class="track-genres">Жанры:
-        {% for genre in genres %}
-          {{ genre.genre.name }}{% if not forloop.last %}, {% endif %}
-        {% endfor %}
-      </p>
-      {% if user.is_authenticated %}
-        <form action="{% url 'like_track' track.id %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="like-button">
-            {% if track.id in liked_tracks %}
-              ❤️ Убрать из избранного
+    <div class="track-header">
+        <div class="track-cover">
+            {% if track.album and track.album.cover %}
+                <img src="{{ track.album.cover }}" alt="{{ track.title }}" />
             {% else %}
-              🤍 Добавить в избранное
+                <div class="no-cover">Нет обложки</div>
             {% endif %}
-          </button>
-        </form>
-      {% endif %}
+        </div>
+
+        <div class="track-info">
+            <h1>{{ track.title }}</h1>
+
+            <div class="track-artist">
+                {% if track.artist %}
+                    <a href="{% url 'artist_detail' artist_id=track.artist.id %}" class="artist-link">
+                        {{ track.artist.name }}
+                    </a>
+                {% else %}
+                    <span>Неизвестный артист</span>
+                {% endif %}
+            </div>
+
+            <div class="track-details">
+                <p><strong>Альбом:</strong> {{ track.album.title|default:"Нет альбома" }}</p>
+                <p><strong>Длительность:</strong> {{ track.duration }} сек.</p>
+                <p><strong>Год выпуска:</strong> {{ track.album.release_date.year|default:"Неизвестно" }}</p>
+
+                {% if genres %}
+                    <p><strong>Жанры:</strong>
+                    {% for genre in genres %}
+                        {{ genre.genre.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <form action="{% url 'like_track' track_id=track.id %}" method="post" class="like-form">
+                    {% csrf_token %}
+                    <button type="submit" class="like-button {% if track.id in liked_tracks %}liked{% endif %}">
+                        {% if track.id in liked_tracks %}
+                            ❤️ В избранном
+                        {% else %}
+                            🤍 Добавить в избранное
+                        {% endif %}
+                    </button>
+                </form>
+            {% endif %}
+        </div>
     </div>
-  </div>
-
-  <div class="track-lyrics">
-    <h2>Текст трека</h2>
-    {% if track.lyrics %}
-      <pre>{{ track.lyrics }}</pre>
-    {% else %}
-      <p>Текст трека отсутствует.</p>
-    {% endif %}
-  </div>
-</div>
-
-<div class="audio-player">
-  <audio controls>
-    <source src="{{ track.file_url }}" type="audio/mpeg">
-    Ваш браузер не поддерживает аудиоэлемент.
-  </audio>
 </div>
 {% endblock %}

@@ -49,7 +49,7 @@
   margin: 0 0 10px 0;
 }
 
-.track-album, .track-duration, .track-genres {
+.track-details {
   font-size: 1.1rem;
   color: #bbb;
   margin: 5px 0;
@@ -71,25 +71,15 @@
   background-color: #19a84c;
 }
 
-.track-lyrics {
-  margin-top: 40px;
-}
-
-.track-lyrics h2 {
-  font-size: 2rem;
+.artist-link {
   color: #1db954;
-  margin-bottom: 20px;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.track-lyrics pre {
-  white-space: pre-wrap;
-  font-family: Arial, sans-serif;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #1f1f1f;
-  padding: 20px;
-  border-radius: 8px;
-  line-height: 1.6;
+.artist-link:hover {
+  color: #1ed760;
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
@@ -110,4 +100,3 @@
     padding: 20px;
   }
 }
-

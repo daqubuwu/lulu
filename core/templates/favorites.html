@@ -13,7 +13,7 @@
         <div class="track-item">
           <div class="track-cover">
             {% if track.album.cover %}
-              <img src="{{ track.album.cover.url }}" alt="{{ track.title }}" />
+              <img src="{{ track.album.cover }}" alt="{{ track.title }}" />
             {% else %}
               <div class="no-cover">No Cover</div>
             {% endif %}
