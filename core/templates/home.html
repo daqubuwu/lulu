@@ -2,55 +2,137 @@
 {% block title %}Главная страница{% endblock %}
 {% block content %}
 <div class="container">
+  <!-- Левый сайдбар с плейлистами -->
   <aside class="sidebar">
     <div class="playlists">
       <h3>Плейлисты</h3>
       <ul>
         {% for playlist in playlists %}
-          <li>{{ playlist.title }}</li>
+          <li>
+            <a href="{% url 'playlist_detail' playlist.id %}">{{ playlist.title }}</a>
+          </li>
         {% endfor %}
       </ul>
     </div>
-    <div class="user-info">
-      <h3>Информация о пользователе</h3>
-      {% if user.is_authenticated %}
-        <p>Имя пользователя: {{ user.username }}</p>
-      {% else %}
-        <p>Пользователь не авторизован</p>
-      {% endif %}
-      <p>Любимых треков: {{ tracks|length }}</p>
-    </div>
   </aside>
+
+  <!-- Основной контент -->
   <main class="main-content">
-    <h2>Новинки</h2>
-    <div class="track-row">
-      {% for track in tracks %}
-        <div class="track-item">
-          <a href="{% url 'artist_detail' track.artist.id %}">
-            {% if track.album.cover %}
-              <img src="{{ track.album.cover }}" alt="{{ track.title }} img" />
-            {% else %}
-              <p>Обложка отсутствует</p>
-            {% endif %}
-            <p>{{ track.title }}</p>
-            <p>{{ track.artist.name }}</p>
-          </a>
-        </div>
-      {% endfor %}
-    </div>
-  </main>
-  <aside class="track-sidebar">
-    <div class="track-info">
-      <h3>Текущий трек</h3>
-      <div class="track-cover">
-        <img id="track-cover" src="" alt="Обложка трека" />
+    <!-- Слайдер "Новинки" -->
+    <section class="section">
+      <h2>Новинки</h2>
+      <div class="slider">
+        {% for track in new_tracks %}
+          <div class="track-item">
+            <a href="{% url 'track_detail' track.id %}">
+              {% if track.album.cover %}
+                <img src="{{ track.album.cover }}" alt="{{ track.title }}" />
+              {% else %}
+                <p>Обложка отсутствует</p>
+              {% endif %}
+              <p>{{ track.title }}</p>
+              <p>
+                <a href="{% url 'artist_detail' track.artist.id %}">{{ track.artist.name }}</a>
+              </p>
+            </a>
+          </div>
+        {% endfor %}
       </div>
-      <p id="track-title">Название трека</p>
-      <p id="track-artist">Исполнитель</p>
-      <p id="track-album">Альбом</p>
-      <p id="track-genres">Жанры: <span></span></p>
-      <button id="add-to-playlist">Добавить в плейлист</button>
-    </div>
-  </aside>
+    </section>
+
+    <!-- Блок "Вам может понравиться" -->
+    <section class="section">
+      <h2>Вам может понравиться</h2>
+      <div class="track-row">
+        {% for track in recommended_tracks %}
+          <div class="track-item">
+            <a href="{% url 'track_detail' track.id %}">
+              {% if track.album.cover %}
+                <img src="{{ track.album.cover }}" alt="{{ track.title }}" />
+              {% else %}
+                <p>Обложка отсутствует</p>
+              {% endif %}
+              <p>{{ track.title }}</p>
+              <p>
+                <a href="{% url 'artist_detail' track.artist.id %}">{{ track.artist.name }}</a>
+              </p>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Плейлист "Необычное для вас" -->
+    <section class="section">
+      <h2>Необычное для вас</h2>
+      <div class="playlist-row">
+        {% for playlist in unusual_playlists %}
+          <div class="playlist-item">
+            <a href="{% url 'playlist_detail' playlist.id %}">
+              {% if playlist.tracks.first.album.cover %}
+                <img src="{{ playlist.tracks.first.album.cover }}" alt="{{ playlist.title }}" />
+              {% else %}
+                <p>Обложка отсутствует</p>
+              {% endif %}
+              <p>{{ playlist.title }}</p>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Блок с остальными плейлистами -->
+    <section class="section">
+      <h2>Все плейлисты</h2>
+      <div class="playlist-row">
+        {% for playlist in all_playlists %}
+          <div class="playlist-item">
+            <a href="{% url 'playlist_detail' playlist.id %}">
+              {% if playlist.tracks.first.album.cover %}
+                <img src="{{ playlist.tracks.first.album.cover }}" alt="{{ playlist.title }}" />
+              {% else %}
+                <p>Обложка отсутствует</p>
+              {% endif %}
+              <p>{{ playlist.title }}</p>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
 </div>
+
+<!-- Скрипт для слайдеров -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sliders = document.querySelectorAll('.slider');
+    sliders.forEach(slider => {
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+      slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+      });
+
+      slider.addEventListener('mouseleave', () => {
+        isDown = false;
+      });
+
+      slider.addEventListener('mouseup', () => {
+        isDown = false;
+      });
+
+      slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; // Скорость прокрутки
+        slider.scrollLeft = scrollLeft - walk;
+      });
+    });
+  });
+</script>
 {% endblock %}

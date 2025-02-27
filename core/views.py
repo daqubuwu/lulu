@@ -4,21 +4,37 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+import random
 
 
 User = get_user_model()
 
 def home(request):
-    query = request.GET.get('q')
-    if query:
-        tracks = Track.objects.filter(Q(title__icontains=query) | Q(artist__name__icontains=query))[:9]
-    else:
-        tracks = Track.objects.select_related('artist').all()
+    # Новинки (рандомные треки)
+    new_tracks = list(Track.objects.all())
+    random.shuffle(new_tracks)
+    new_tracks = new_tracks[:10]  # Первые 10 треков
 
-    artists = Artist.objects.all()
-    playlists = Playlist.objects.all()
+    # Вам может понравиться (рандомные треки)
+    recommended_tracks = list(Track.objects.all())
+    random.shuffle(recommended_tracks)
+    recommended_tracks = recommended_tracks[:10]  # Первые 10 треков
 
-    return render(request, 'home.html', {'tracks': tracks, 'artists': artists, 'playlists': playlists})
+    # Плейлист "Необычное для вас" (рандомные плейлисты)
+    unusual_playlists = list(Playlist.objects.all())
+    random.shuffle(unusual_playlists)
+    unusual_playlists = unusual_playlists[:5]  # Первые 5 плейлистов
+
+    # Все остальные плейлисты
+    all_playlists = Playlist.objects.exclude(id__in=[p.id for p in unusual_playlists])
+
+    context = {
+        'new_tracks': new_tracks,
+        'recommended_tracks': recommended_tracks,
+        'unusual_playlists': unusual_playlists,
+        'all_playlists': all_playlists,
+    }
+    return render(request, 'home.html', context)
 
 def artist_detail(request, artist_id):
     artist = Artist.objects.get(id=artist_id)
@@ -84,3 +100,10 @@ def like_track(request, track_id):
     if not created:
         like.delete()
     return redirect('track_detail', track_id=track_id)
+
+def playlist_detail(request, playlist_id):
+    playlist = get_object_or_404(Playlist, id=playlist_id)
+    context = {
+        'playlist': playlist,
+    }
+    return render(request, 'playlist_detail.html', context)

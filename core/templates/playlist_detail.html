@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ playlist.title }}{% endblock %}
+{% block content %}
+<div class="playlist-detail-container">
+    <div class="playlist-header">
+        <div class="playlist-cover">
+            {% if playlist.tracks.first.album.cover %}
+                <img src="{{ playlist.tracks.first.album.cover }}" alt="{{ playlist.title }}" />
+            {% else %}
+                <p>Обложка отсутствует</p>
+            {% endif %}
+        </div>
+        <div class="playlist-info">
+            <h1>{{ playlist.title }}</h1>
+            <p class="playlist-description">{{ playlist.description }}</p>
+            <p class="playlist-owner">Создатель: {{ playlist.user.username }}</p>
+        </div>
+    </div>
+
+    <div class="playlist-tracks">
+        <h2>Треки</h2>
+        <div class="track-row">
+            {% for track in playlist.tracks.all %}
+                <div class="track-item">
+                    <a href="{% url 'track_detail' track.id %}">
+                        {% if track.album.cover %}
+                            <img src="{{ track.album.cover }}" alt="{{ track.title }}" />
+                        {% else %}
+                            <p>Обложка отсутствует</p>
+                        {% endif %}
+                        <p>{{ track.title }}</p>
+                        <p>{{ track.artist.name }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

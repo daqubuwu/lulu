@@ -15,6 +15,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('track/<int:track_id>/', track_detail, name='track_detail'),
     path('like/<int:track_id>/', like_track, name='like_track'),
+    path('playlist/<int:playlist_id>/', views.playlist_detail, name='playlist_detail'),
 ]
 
 if settings.DEBUG:

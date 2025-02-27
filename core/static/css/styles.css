@@ -7,6 +7,7 @@ body {
   overflow-x: hidden;
 }
 
+/* Стили для хедера */
 header {
   background-color: #1f1f1f;
   padding: 10px 20px;
@@ -116,10 +117,11 @@ header {
   background-color: #19a84c;
 }
 
+/* Остальные стили */
 .container {
   display: flex;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   gap: 20px;
   box-sizing: border-box;
@@ -130,14 +132,14 @@ header {
   flex-shrink: 0;
 }
 
-.playlists, .user-info {
+.playlists {
   background-color: #1f1f1f;
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 20px;
 }
 
-.playlists h3, .user-info h3 {
+.playlists h3 {
   color: #1db954;
   margin-top: 0;
 }
@@ -149,88 +151,55 @@ header {
 
 .playlists ul li {
   padding: 8px 0;
-  color: #fff;
 }
 
-.user-info p {
-  margin: 5px 0;
+.playlists ul li a {
   color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.playlists ul li a:hover {
+  color: #1db954;
 }
 
 .main-content {
   flex-grow: 1;
 }
 
-.main-content h2 {
+.section {
+  margin-bottom: 40px;
+}
+
+.section h2 {
   color: #1db954;
-  margin-top: 0;
-}
-
-.track-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: flex-start;
-}
-
-.track-item {
-  background-color: #1f1f1f;
-  padding: 15px;
-  border-radius: 8px;
-  width: calc(33% - 15px);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box;
-  text-align: center;
   margin-bottom: 20px;
 }
 
-.track-item:hover {
+.slider, .track-row, .playlist-row {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+.track-item, .playlist-item {
+  background-color: #1f1f1f;
+  padding: 15px;
+  border-radius: 8px;
+  width: 200px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.track-item:hover, .playlist-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.track-item img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.track-item p {
-  margin: 5px 0;
-  color: #fff;
-}
-
-.track-item a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.track-item a:hover {
-  color: #1db954;
-}
-
-.track-sidebar {
-  width: 250px;
-  flex-shrink: 0;
-  background-color: #1f1f1f;
-  padding: 15px;
-  border-radius: 8px;
-  margin-left: 20px;
-  box-sizing: border-box;
-}
-
-.track-info {
-  text-align: center;
-}
-
-.track-info h3 {
-  color: #1db954;
-  margin-top: 0;
-}
-
-.track-cover img {
+.track-item img, .playlist-item img {
   width: 100%;
   height: 150px;
   object-fit: cover;
@@ -238,148 +207,46 @@ header {
   margin-bottom: 10px;
 }
 
-.track-info p {
+.track-item p, .playlist-item p {
   margin: 5px 0;
   color: #fff;
 }
 
-#add-to-playlist {
-  padding: 8px 16px;
-  background-color: #1db954;
-  border: none;
-  border-radius: 20px;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
+.track-item a, .playlist-item a {
+  text-decoration: none;
+  color: inherit;
 }
 
-#add-to-playlist:hover {
-  background-color: #19a84c;
-}
-
-.track-detail-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  color: #fff;
-}
-
-.track-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.track-cover img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.no-cover {
-  width: 200px;
-  height: 200px;
-  background-color: #333;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  font-size: 1rem;
-}
-
-.track-info {
-  flex-grow: 1;
-}
-
-.track-info h1 {
-  font-size: 2.5rem;
-  margin: 0 0 10px 0;
+.track-item a:hover, .playlist-item a:hover {
   color: #1db954;
 }
 
-.track-artist {
-  font-size: 1.2rem;
-  color: #bbb;
-  margin: 0 0 10px 0;
+/* Стили для плейлистов (выделение) */
+.playlist-item {
+  background-color: #2a2a2a;  /* Более светлый фон */
+  padding: 20px;  /* Увеличил отступы */
+  width: 220px;  /* Увеличил ширину */
 }
 
-.track-album, .track-duration, .track-genres {
-  font-size: 1rem;
-  color: #bbb;
-  margin: 5px 0;
+.playlist-item img {
+  height: 180px;  /* Увеличил высоту обложки */
 }
 
-#add-to-playlist {
-  padding: 10px 20px;
-  background-color: #1db954;
-  border: none;
-  border-radius: 20px;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
+/* Стили для скролла */
+.slider::-webkit-scrollbar, .track-row::-webkit-scrollbar, .playlist-row::-webkit-scrollbar {
+  height: 8px;
 }
 
-#add-to-playlist:hover {
-  background-color: #19a84c;
+.slider::-webkit-scrollbar-track, .track-row::-webkit-scrollbar-track, .playlist-row::-webkit-scrollbar-track {
+  background: #1f1f1f;
+  border-radius: 4px;
 }
 
-.track-lyrics {
-  margin-top: 40px;
+.slider::-webkit-scrollbar-thumb, .track-row::-webkit-scrollbar-thumb, .playlist-row::-webkit-scrollbar-thumb {
+  background: #1db954;
+  border-radius: 4px;
 }
 
-.track-lyrics h2 {
-  font-size: 2rem;
-  color: #1db954;
-  margin-bottom: 20px;
-}
-
-.track-lyrics pre {
-  white-space: pre-wrap;
-  font-family: Arial, sans-serif;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #1f1f1f;
-  padding: 20px;
-  border-radius: 8px;
-  line-height: 1.6;
-}
-
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .sidebar, .track-sidebar {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  .track-item {
-    width: calc(50% - 10px);
-  }
-}
-
-
-.like-button {
-  padding: 10px 20px;
-  background-color: #1db954;
-  border: none;
-  border-radius: 20px;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
-}
-
-.like-button:hover {
-  background-color: #19a84c;
+.slider::-webkit-scrollbar-thumb:hover, .track-row::-webkit-scrollbar-thumb:hover, .playlist-row::-webkit-scrollbar-thumb:hover {
+  background: #19a84c;
 }
